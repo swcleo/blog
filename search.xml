@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>在ubuntu使用systemd建立開機telegram訊息通知</title>
+    <url>/2023/10/27/check-network-sh/</url>
+    <content><![CDATA[<p>1 首先，我們先在 <code>/usr/local/bin</code> 建立腳本 <code>check_network.sh</code>。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">TELEGRAM_BOT_TOKEN=<span class="string">&quot;TELEGRAM_BOT_TOKEN&quot;</span></span><br><span class="line">TELEGRAM_CHAT_ID=<span class="string">&quot;TELEGRAM_CHAT_ID&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># eno1 改用你電腦對外網卡</span></span><br><span class="line">IP_ADDRESS=$(ip addr show eno1 | grep -oP <span class="string">&#x27;(?&lt;=inet\s)\d+\.\d+\.\d+\.\d+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">EXTERNAL_CONNECTION=$(ping -c 1 google.com 2&gt;&amp;1 | grep <span class="string">&quot;1 packets transmitted&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$EXTERNAL_CONNECTION</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  MESSAGE=<span class="string">&quot;Ubuntu 係統已啓動。IP 地址：<span class="variable">$IP_ADDRESS</span>&quot;</span></span><br><span class="line">  URL=<span class="string">&quot;https://api.telegram.org/bot<span class="variable">$TELEGRAM_BOT_TOKEN</span>/sendMessage&quot;</span></span><br><span class="line">  curl -s -X POST <span class="variable">$URL</span> -d <span class="string">&quot;chat_id=<span class="variable">$TELEGRAM_CHAT_ID</span>&amp;text=<span class="variable">$MESSAGE</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<p>2 設定腳本可執行</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> +x /usr/local/bin/check_netowrk.sh</span><br></pre></td></tr></table></figure>
+
+<p>3 使用<code>systemd</code>建立開機服務的設定</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim /etc/systemd/system/check-network.service</span><br></pre></td></tr></table></figure>
+
+<p>4 開機服務設定內容如下：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Check External Network Connection and Send Notification</span><br><span class="line">After=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/local/bin/check_netowrk.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>5 啟用並啟動服務</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> check-network.service</span><br><span class="line">sudo systemctl start check-network.service</span><br></pre></td></tr></table></figure>
+
+<p>6 確認服務狀態</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo systemctl status check-network.service</span><br></pre></td></tr></table></figure>
+
+<p>如何服務運作正常，可以手動執行腳本測試，確認訊息有正常發送之後，在重新開機，如果網路服務有正常連線，應該會收開機後收到訊息。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Angular 使用 Browserslist 處理瀏覽器相容性問題</title>
+    <url>/2023/11/02/angular-browser-compatibility/</url>
+    <content><![CDATA[<h2 id="Angular-瀏覽器相容性設定"><a href="#Angular-瀏覽器相容性設定" class="headerlink" title="Angular 瀏覽器相容性設定"></a>Angular 瀏覽器相容性設定</h2><p>Angular 官方文件有這一段說明 <a href="https://angular.io/guide/build#configuring-browser-compatibility">Configuring browser compatibility
+</a>。</p>
+<p>其實大家都看過，但是很少人會留意，到底自身的專案應該要怎麼設定會比較好，</p>
+<p>假設 <code>.browserslistrc</code> 設定如下：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">&gt;0.3%, </span><br><span class="line">last 1 Chrome version, </span><br><span class="line">last 1 Firefox version, </span><br><span class="line">last 2 Edge major versions, </span><br><span class="line">last 3 Safari major versions,</span><br><span class="line">last 2 iOS major versions, </span><br><span class="line">not dead</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>Browserslist 有提供線上工具 <a href="https://browsersl.ist/">https://browsersl.ist/</a> 可以輸入設定後，查看各瀏覽器相容的狀況。</p>
+<p><img src="/images/angular-browserlist.png" alt="angular-browserlist"></p>
+<p>即使我們早就曉得專案可以透過 <code>.browserslistrc</code> 進行設定，但還是經常會被客戶使用比較舊的裝置而遇到bug的狀況。</p>
+<p>照上述的設定來看，手機裝置 Chrome for Android 支援程度是 109 版本以上，但客戶目前其實還有在使用 Android 9 進行瀏覽網頁還是大有人在，因此如果工程師有使用到 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis">globalThis</a> 這樣子的全域變數，往往不自覺就造成線上問題了。</p>
+<p>所以，在開出新專案時，可以改用<code>年份</code>取代<code>裝置版本</code>，舉例：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">since 2018-01, not dead</span><br></pre></td></tr></table></figure>
+
+<p>“since 2018-01”:<br>這部分指定專案要支援的瀏覽器的最早版本從 2018 年 1 月開始的瀏覽器版本。你的前端代碼將為 2018 年 1 月或之後版本的瀏覽器進行優化和支援。</p>
+<p>“not dead”:<br>代表不需要支援已經被廢棄瀏覽器版本，例如 <code>IEMustDie</code> XD。</p>
+<p>總而言之，當遇到語法相容性問題十，除了找尋對應的 <code>polyfills</code> 外，也許可以檢查一下 angular 專案裡的 <code>.browserslistrc</code> 這隻檔案，也許調整這邊的內容，會比加入不同功能的 polyfills 設定來得方便。</p>
+]]></content>
+      <tags>
+        <tag>Angular、Browserslist</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>跨來源資源共用(CORS)</title>
+    <url>/2022/08/31/cros/</url>
+    <content><![CDATA[<h2 id="故事背景"><a href="#故事背景" class="headerlink" title="故事背景"></a>故事背景</h2><p>今日上班的時候，隔壁的小王跑來跟我說，目前線上遇到CORS的問題，深入了解後才曉得在後端的工程人員對於CORS的認識不深，因此在進行新環境部署的時候缺少環境的設定檔，面對總是有類似的狀況一再發生，是否有什麼方式可以改善。</p>
+<h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><p>要說起CORS的由來，主要還是在於安全性考量，在瀏覽器上大部份是採用<a href="https://developer.mozilla.org/zh-TW/docs/Web/Security/Same-origin_policy">同源政策</a>(Same-origin policy)限制了不同網域資源間的活動。因此當我們API站的網址、埠號、協定不一致的時候，通常我們會在開發者工看到下面的錯誤訊息：</p>
+<img src="/2022/08/31/cros/cros.png" class="label">
+
+<h2 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h2><p>隨著目前網站提供的功能與內容的豐富度越來越高，經常會有需要存取第三方資源的狀況，因此大部份都會透過一些跨域存取的方法達到請求資源的目的，<a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/CORS">CORS</a>就是其中一種可以達成存取資源方法。伺服器會透過<code>preflight request</code>機制使用<code>OPTIONS</code>方法發出一個請求，確認伺服器是否支援跨域請求以及相關內容，當伺服務允許之後，才會實際發送資源請求的動作，並告知客戶端是否有需要相關的認證資訊(Cookie、Header)之類的。</p>
+<span id="more"></span>
+<h2 id="解法方法"><a href="#解法方法" class="headerlink" title="解法方法"></a>解法方法</h2><p>根據伺服器的不同，通常很容易在網路上找到各自對應的設定方式，這邊我以大家常使用的<code>nginx</code>伺服器設定進行解說，如果想要更進一步的了解，可以參考阮一峰大大的這篇<a href="http://www.ruanyifeng.com/blog/2016/04/cors.html">日誌</a>。</p>
+<p>在<code>nginx</code>的設定檔加入下述參述</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Origin *;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Methods <span class="string">&#x27;GET,POST,PUT,DELETE,OPTIONS&#x27;</span>;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Headers <span class="string">&#x27;Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$request_method</span> = <span class="string">&#x27;OPTIONS&#x27;</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">204</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Access-Control-Allow-Origin"><a href="#Access-Control-Allow-Origin" class="headerlink" title="Access-Control-Allow-Origin"></a>Access-Control-Allow-Origin</h3><p>當設定為 <code>*</code> 即表示伺服器接受跨域請求。</p>
+<h3 id="Access-Control-Allow-Methods"><a href="#Access-Control-Allow-Methods" class="headerlink" title="Access-Control-Allow-Methods"></a>Access-Control-Allow-Methods</h3><p>這邊需指定伺服器允許的請求方式有哪些，一般常見的的會是 <code>OPTIONS</code>、<code>GET</code>、<code>POST</code>，可以根據需要進行設定。</p>
+<h3 id="Access-Control-Allow-Headers"><a href="#Access-Control-Allow-Headers" class="headerlink" title="Access-Control-Allow-Headers"></a>Access-Control-Allow-Headers</h3><p>這邊需指定伺服器可接受的檔頭內容，可以根據需要進行設定。</p>
+<h3 id="withCredentials"><a href="#withCredentials" class="headerlink" title="withCredentials"></a>withCredentials</h3><p>CORS請求在預設上不會涉及Cookie相關認證的處理，如果需要客端將Cookie發送至伺服器除</p>
+<p>在<code>xhr</code>上需要設定<code>withCredentials</code>參數</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">xhr.<span class="property">withCredentials</span> = <span class="literal">true</span>;</span><br><span class="line">xhr.<span class="title function_">open</span>(<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;https://www.example.com/info&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line">xhr.<span class="title function_">send</span>();</span><br></pre></td></tr></table></figure>
+
+<p>伺服器也需要指定檔頭的設定</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">add_header</span> <span class="string">&#x27;Access-Control-Allow-Credentials&#x27;</span> <span class="string">&#x27;true&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="測試CORS設定是否生效"><a href="#測試CORS設定是否生效" class="headerlink" title="測試CORS設定是否生效"></a>測試CORS設定是否生效</h2><p>要曉得伺服務是否支援CORS，經由正式的客端環境透過瀏覽器發求資源請求是比較正規的方式，但是理解原理後，也可以透過寫一些腳本來輔助我們進行新環境的檢查，下面舉一個<code>簡單請求</code>測試範例供參考。</p>
+<p>使用<code>curl</code>指令測試<a href="https://opendata.cwb.gov.tw/devManual/insrtuction">氣象資料開放平臺</a>的API請求</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">curl -I -X OPTIONS \</span><br><span class="line">-H <span class="string">&quot;Origin: http://example.com&quot;</span> \</span><br><span class="line"><span class="string">&quot;https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=&#123;授權碼&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>從 Response Header 看到<code>Access-Control-Allow-Origin</code> 欄位設定是否正確</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Wed, 31 Aug 2022 03:07:52 GMT</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Allow: GET,HEAD</span><br><span class="line">Access-Control-Allow-Origin: *</span><br><span class="line">Strict-Transport-Security: max-age=16070400; includeSubDomains; preload</span><br><span class="line">Set-Cookie: TS01a5ae52=0107dddfef9ec54bca15dea78f784755ae5faeeb1563e9155cd3bf5d2a9c2c142332f4e99fe8b5eca4a85c0982aa2fbf202c696e40; Path=/; Domain=.opendata.cwb.gov.tw</span><br><span class="line">Transfer-Encoding: chunked</span><br></pre></td></tr></table></figure>
+
+<p>如果非簡單請求的狀況，可以進一步檢視回應中<code>Access-Control-Allow-Methods</code>、<code>Access-Control-Allow-Headers</code>、<code>Access-Control-Allow-Credentials</code>這些字段是否與伺服器上的設定是相符的。</p>
+<!-- 連結參考 -->
+]]></content>
+  </entry>
+  <entry>
+    <title>Git osxkeychain 帳密設定</title>
+    <url>/2023/03/03/git-credential-keychain/</url>
+    <content><![CDATA[<h2 id="Git-http-s-帳密設定"><a href="#Git-http-s-帳密設定" class="headerlink" title="Git http(s)帳密設定"></a>Git http(s)帳密設定</h2><p>通常在Git私倉的建置中，我們通常是透過http協定來存取Git私倉上的資源，在macOS上為了方便，透過我們會利用<code>Keychain</code>來安全管理使用者的帳號及密碼，因此大略都會透過下列指令設定 git credential osxkeychain 用戶憑證的管理方式。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git config --global credential.helper osxkeychain</span><br></pre></td></tr></table></figure>
+
+<h2 id="帳密更新方式"><a href="#帳密更新方式" class="headerlink" title="帳密更新方式"></a>帳密更新方式</h2><p>隨著時間一久，突然要上傳異動至<code>repo</code>專案時發現為何突然間提示權限不足，經過檢查線上權限都有開啟，那可能是因為帳密跑掉或錯誤而影響。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git credential-osxkeychain get</span><br><span class="line">host=github.com</span><br><span class="line">protocol=https</span><br><span class="line">&gt; [Press Return]</span><br></pre></td></tr></table></figure>
+
+<p>可以透過上列的指令可以查看目前對照的帳號及密碼是否正確</p>
+<p>如果不確定，也可以透過下列指令先刪除原有設定，後續在進行git指令操作時就會需要重新輸入帳密</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git credential-osxkeychain erase</span><br><span class="line">host=github.com</span><br><span class="line">protocol=https</span><br><span class="line">&gt; [Press Return]</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>git、osxkeychain</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>移除 Angular 無用的 *.spec.ts 檔案</title>
+    <url>/2023/11/21/rm-ng-spec/</url>
+    <content><![CDATA[<p>Angular Library 目前是使用 <code>karma + Jasmine</code> 運行單元測試。在使用 <code>ng g c</code> 指令時，預設會新增測試檔案，如果團隊沒有單元測試的習慣，時間久了專案資料夾內會堆積許多冗餘的檔案，因此我希望能透寫個於腳本來幫我快速人工檢查在專案內的測試檔案，哪些是可以移除的？哪些又是可以保留的。</p>
+<p>使用 ChatGPT 快速幫我產生想要的內容如下：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定目錄路徑</span></span><br><span class="line">directory_path=<span class="string">&quot;projects/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定要檢查的代碼片段</span></span><br><span class="line">code_to_check=<span class="string">&quot;expect(service).toBeTruthy()&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 find 獲取目錄下的所有文件</span></span><br><span class="line">files=$(find <span class="string">&quot;<span class="variable">$directory_path</span>&quot;</span> -<span class="built_in">type</span> f -name <span class="string">&quot;*.spec.ts&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍曆每個文件並使用 grep 檢查內容</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> <span class="variable">$files</span>; <span class="keyword">do</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line">  <span class="keyword">if</span> grep <span class="string">&quot;<span class="variable">$code_to_check</span>&quot;</span> <span class="string">&quot;<span class="variable">$file</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;文件 <span class="variable">$file</span> 包含指定的代碼片段。&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 顯示文件內容</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;文件內容：&quot;</span></span><br><span class="line">    <span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 詢問用戶是否刪除文件</span></span><br><span class="line">    <span class="built_in">read</span> -p <span class="string">&quot;是否刪除文件？(y/n): &quot;</span> response</span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$response</span>&quot;</span> == <span class="string">&quot;y&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">rm</span> <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;文件已刪除。&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>大致上看過 shell 語法沒問題，我們就可以直接運行代碼，整理專案中的檔案內容。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>如何在VSCode上進行TypeScript Debugging</title>
+    <url>/2022/07/05/vscode-ts-debug/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>日常工作上經常性使用<code>VSCode</code>這款原始碼編輯器做為開發工具，但大部份都只用來寫寫代碼、透過擴充套件<code>highlight</code>代碼，以及進行相關編輯、搜尋、取代等文書工作，甚少直接使用編輯器來運行程式，這次來記錄一下如何使用內建的Debug功能進行Typescript的Debugging。</p>
+<p>參考內容：<br><a href="https://code.visualstudio.com/docs/editor/debugging">https://code.visualstudio.com/docs/editor/debugging</a></p>
+<span id="more"></span>
+<h2 id="測試代碼"><a href="#測試代碼" class="headerlink" title="測試代碼"></a>測試代碼</h2><p>日常在進行除錯或是閱讀代碼時，經常需要在不同的程式碼檔案中進行切換，腦中還需要記憶各種不同的變數以及執行流程，稍微不注意就會需要重頭來過。</p>
+<p>下面代碼我是近期在研究的<code>colyseus</code>開源專案，正在理解該專案的技術是如何做到C&#x2F;S架構之間資料狀態同步的這件事，接下來我們試著使用VSCode Debug功能來追蹤程式碼運行的方式。</p>
+<p>首先準備一段測試代碼，先克隆<code>colyseus/schema</code>下來，在根目錄隨意取個<code>test.ts</code>檔名做為<code>ts-node</code>執行時進入點：</p>
+<p><img src="https://i.imgur.com/4hGwePt.png?1" alt="Imgur"></p>
+<h2 id="Debug功能參數設定"><a href="#Debug功能參數設定" class="headerlink" title="Debug功能參數設定"></a>Debug功能參數設定</h2><p>使用<code>Shift + Command + D</code>切換至<code>Run and Debug</code>選單功能，若當前專案沒有<code>launch.json</code>設定，可以直接點選創建內容。</p>
+<p><img src="https://i.imgur.com/8bwkXID.png" alt="Image"></p>
+<p>因為是運行Typescipt專案，選取<code>Node.js</code></p>
+<p><img src="https://i.imgur.com/qhiS8b8.png" alt="Image"></p>
+<p>會出現json格式的預設內容</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pwa-node&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Launch Program&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;skipFiles&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;&lt;node_internals&gt;/**&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/test.ts&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;outFiles&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;$&#123;workspaceFolder&#125;/**/*.js&quot;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>我們可以根據自身需要調整設定</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Test Example&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceRoot&#125;/node_modules/ts-node/dist/bin.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">              <span class="string">&quot;test.ts&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceRoot&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="執行方式"><a href="#執行方式" class="headerlink" title="執行方式"></a>執行方式</h2><p>接著在程式碼區塊標注上追蹤用的中斷點，點選<code>F5</code>或執行按鈕</p>
+<p><img src="https://i.imgur.com/2FHd6Yu.png" alt="Image"></p>
+<p>VSCode會進入Debugging模式，並將執行程式環境中的變數、上下文內容等資料呈現在左側資料列表中。</p>
+<p><img src="https://i.imgur.com/d05qP40.png" alt="Image"></p>
+<p>後續的操作可以通過工具列或是快速鍵進行操作</p>
+<p><img src="https://i.imgur.com/U6fEuQR.png" alt="Image"></p>
+<ul>
+<li>Continue &#x2F; Pause F5</li>
+<li>Step Over F10</li>
+<li>Step Into F11</li>
+<li>Step Out ⇧F11</li>
+<li>Restart ⇧⌘F5</li>
+<li>Stop ⇧F5</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>VSCode</tag>
+      </tags>
+  </entry>
+</search>
