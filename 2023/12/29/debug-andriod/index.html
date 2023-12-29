@@ -20,30 +20,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"swcleo.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Angular 瀏覽器相容性設定Angular 官方文件有這一段說明 Configuring browser compatibility 。 其實大家都看過，但是很少人會留意，到底自身的專案應該要怎麼設定會比較好， 假設 .browserslistrc 設定如下： 1234567&gt;0.3%, last 1 Chrome version, last 1 Firefox version, las">
+    <meta name="description" content="前端如何 debug Webview 應用程式混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。 混合式應用程式使">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Angular 使用 Browserslist 處理瀏覽器相容性問題">
-<meta property="og:url" content="https://swcleo.github.io/2023/11/02/angular-browser-compatibility/index.html">
+<meta property="og:title" content="debug-andriod">
+<meta property="og:url" content="https://swcleo.github.io/2023/12/29/debug-andriod/index.html">
 <meta property="og:site_name" content="技術日誌 ✏ LEO">
-<meta property="og:description" content="Angular 瀏覽器相容性設定Angular 官方文件有這一段說明 Configuring browser compatibility 。 其實大家都看過，但是很少人會留意，到底自身的專案應該要怎麼設定會比較好， 假設 .browserslistrc 設定如下： 1234567&gt;0.3%, last 1 Chrome version, last 1 Firefox version, las">
+<meta property="og:description" content="前端如何 debug Webview 應用程式混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。 混合式應用程式使">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://swcleo.github.io/images/angular-browserlist.png">
-<meta property="article:published_time" content="2023-11-02T06:44:52.000Z">
-<meta property="article:modified_time" content="2023-11-21T03:52:55.790Z">
+<meta property="article:published_time" content="2023-12-29T02:44:59.000Z">
+<meta property="article:modified_time" content="2023-12-29T04:59:09.647Z">
 <meta property="article:author" content="Leo Chen">
-<meta property="article:tag" content="Angular、Browserslist">
+<meta property="article:tag" content="andriod webview">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://swcleo.github.io/images/angular-browserlist.png">
 
 
-<link rel="canonical" href="https://swcleo.github.io/2023/11/02/angular-browser-compatibility/">
+<link rel="canonical" href="https://swcleo.github.io/2023/12/29/debug-andriod/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://swcleo.github.io/2023/11/02/angular-browser-compatibility/","path":"2023/11/02/angular-browser-compatibility/","title":"Angular 使用 Browserslist 處理瀏覽器相容性問題"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://swcleo.github.io/2023/12/29/debug-andriod/","path":"2023/12/29/debug-andriod/","title":"debug-andriod"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Angular 使用 Browserslist 處理瀏覽器相容性問題 | 技術日誌 ✏ LEO</title>
+<title>debug-andriod | 技術日誌 ✏ LEO</title>
   
 
 
@@ -143,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Angular-%E7%80%8F%E8%A6%BD%E5%99%A8%E7%9B%B8%E5%AE%B9%E6%80%A7%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">Angular 瀏覽器相容性設定</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95-debug-Webview-%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">前端如何 debug Webview 應用程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebView-Test"><span class="nav-number">2.</span> <span class="nav-text">WebView Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Andriod-Studio"><span class="nav-number">3.</span> <span class="nav-text">Andriod Studio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9C%E7%A5%9E%E6%A8%A1%E6%93%AC%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">夜神模擬器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb%E6%8C%87%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">adb指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chrome-Debug"><span class="nav-number">6.</span> <span class="nav-text">Chrome Debug</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -208,7 +206,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://swcleo.github.io/2023/11/02/angular-browser-compatibility/">
+    <link itemprop="mainEntityOfPage" href="https://swcleo.github.io/2023/12/29/debug-andriod/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -221,12 +219,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Angular 使用 Browserslist 處理瀏覽器相容性問題 | 技術日誌 ✏ LEO">
+      <meta itemprop="name" content="debug-andriod | 技術日誌 ✏ LEO">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Angular 使用 Browserslist 處理瀏覽器相容性問題
+          debug-andriod
         </h1>
 
         <div class="post-meta-container">
@@ -236,15 +234,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
+      
 
-      <time title="創建時間：2023-11-02 14:44:52" itemprop="dateCreated datePublished" datetime="2023-11-02T14:44:52+08:00">2023-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2023-11-21 11:52:55" itemprop="dateModified" datetime="2023-11-21T11:52:55+08:00">2023-11-21</time>
+      <time title="創建時間：2023-12-29 10:44:59 / 修改時間：12:59:09" itemprop="dateCreated datePublished" datetime="2023-12-29T10:44:59+08:00">2023-12-29</time>
     </span>
 
   
@@ -256,8 +248,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2023/11/02/angular-browser-compatibility/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/11/02/angular-browser-compatibility/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2023/12/29/debug-andriod/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/12/29/debug-andriod/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -271,24 +263,52 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Angular-瀏覽器相容性設定"><a href="#Angular-瀏覽器相容性設定" class="headerlink" title="Angular 瀏覽器相容性設定"></a>Angular 瀏覽器相容性設定</h2><p>Angular 官方文件有這一段說明 <a target="_blank" rel="noopener" href="https://angular.io/guide/build#configuring-browser-compatibility">Configuring browser compatibility
-</a>。</p>
-<p>其實大家都看過，但是很少人會留意，到底自身的專案應該要怎麼設定會比較好，</p>
-<p>假設 <code>.browserslistrc</code> 設定如下：</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;0.3%, </span><br><span class="line">last 1 Chrome version, </span><br><span class="line">last 1 Firefox version, </span><br><span class="line">last 2 Edge major versions, </span><br><span class="line">last 3 Safari major versions,</span><br><span class="line">last 2 iOS major versions, </span><br><span class="line">not dead</span><br></pre></td></tr></table></figure>
-
+        <h2 id="前端如何-debug-Webview-應用程式"><a href="#前端如何-debug-Webview-應用程式" class="headerlink" title="前端如何 debug Webview 應用程式"></a>前端如何 debug Webview 應用程式</h2><p>混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。</p>
+<p>混合式應用程式使用一個稱為 WebView 的元件，這個元件允許開發者在應用程式中嵌入網頁內容，提供使用網頁技術開發的功能。</p>
+<h2 id="WebView-Test"><a href="#WebView-Test" class="headerlink" title="WebView Test"></a>WebView Test</h2><p>這是一個手機 App 用於測試 Andriod WebView 應用程式，提供前端開發人員需要的資訊，透過手機安裝 <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.snc.test.webview2&hl=zh_TW&gl=US">Google Play</a> 即可使用，相對簡單好上手。</p>
 <span id="more"></span>
 
-<p>Browserslist 有提供線上工具 <a target="_blank" rel="noopener" href="https://browsersl.ist/">https://browsersl.ist/</a> 可以輸入設定後，查看各瀏覽器相容的狀況。</p>
-<p><img src="/images/angular-browserlist.png" alt="angular-browserlist"></p>
-<p>即使我們早就曉得專案可以透過 <code>.browserslistrc</code> 進行設定，但還是經常會被客戶使用比較舊的裝置而遇到bug的狀況。</p>
-<p>照上述的設定來看，手機裝置 Chrome for Android 支援程度是 109 版本以上，但客戶目前其實還有在使用 Android 9 進行瀏覽網頁還是大有人在，因此如果工程師有使用到 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis">globalThis</a> 這樣子的全域變數，往往不自覺就造成線上問題了。</p>
-<p>所以，在開出新專案時，可以改用<code>年份</code>取代<code>裝置版本</code>，舉例：</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">since 2018-01, not dead</span><br></pre></td></tr></table></figure>
+<h2 id="Andriod-Studio"><a href="#Andriod-Studio" class="headerlink" title="Andriod Studio"></a>Andriod Studio</h2><p>如果有App開發相關的經驗，也可以開發一個 WebView 專案，提供更完整的測試功能。</p>
+<p>可以參考 <a target="_blank" rel="noopener" href="https://github.com/swcleo/android-webvew-example">https://github.com/swcleo/android-webvew-example</a></p>
+<p>記得安裝完下載並安裝完 Andriod Studio 後，記得將 sdk 的工具包指令放到 PATH 上。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:~/Library/Android/sdk/platform-tools</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:~/Library/Android/sdk/tools</span><br></pre></td></tr></table></figure>
 
-<p>“since 2018-01”:<br>這部分指定專案要支援的瀏覽器的最早版本從 2018 年 1 月開始的瀏覽器版本。你的前端代碼將為 2018 年 1 月或之後版本的瀏覽器進行優化和支援。</p>
-<p>“not dead”:<br>代表不需要支援已經被廢棄瀏覽器版本，例如 <code>IEMustDie</code> XD。</p>
-<p>總而言之，當遇到語法相容性問題十，除了找尋對應的 <code>polyfills</code> 外，也許可以檢查一下 angular 專案裡的 <code>.browserslistrc</code> 這隻檔案，也許調整這邊的內容，會比加入不同功能的 polyfills 設定來得方便。</p>
+<h2 id="夜神模擬器"><a href="#夜神模擬器" class="headerlink" title="夜神模擬器"></a>夜神模擬器</h2><p>筆者開發的電腦是 Intel 核心的 Mac 電腦，如果手機上沒有實機，使用 Andriod Stiod 提供的 Simulator 不方便測試時，可以安裝夜神模擬器搭配 Andriod Studio 進行測試。</p>
+<p>Andriod Studio 如何連接夜神模擬器</p>
+<p>1 安裝&amp;執行夜神模擬器</p>
+<p>2 使用 adb 連接夜神的 debug 接口，可以從 virtualbox 的網路接口查看，預設是 <code>62001</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 127.0.0.1:62001</span><br></pre></td></tr></table></figure>
+
+<h2 id="adb指令"><a href="#adb指令" class="headerlink" title="adb指令"></a>adb指令</h2><ul>
+<li>查看 webview 版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell dumpsys package com.google.android.webview | grep versionName</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看手機型號</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop ro.product.model</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看設備資料</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop | grep product</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell <span class="built_in">cat</span> /system/build.prop | grep product</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看 android 系統版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop ro.build.version.release</span><br></pre></td></tr></table></figure>
+
+<h2 id="Chrome-Debug"><a href="#Chrome-Debug" class="headerlink" title="Chrome Debug"></a>Chrome Debug</h2><p>如果 WebView 程式有透過設定啟用 Debugging 功能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WebView.setWebContentsDebuggingEnabled(true);</span><br></pre></td></tr></table></figure>
+
+<p>可以在 Chrome 上網址輸入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chrome://inspect</span><br></pre></td></tr></table></figure>
+
+<p>就可以透過手機USB偵錯功能使用 chrome 開發者工具排除 WebView 上網頁 debug 測試。</p>
 
     </div>
 
@@ -298,21 +318,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Angular%E3%80%81Browserslist/" rel="tag"># Angular、Browserslist</a>
+              <a href="/tags/andriod-webview/" rel="tag"># andriod webview</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/10/27/check-network-sh/" rel="prev" title="在ubuntu使用systemd建立開機telegram訊息通知">
-                  <i class="fa fa-chevron-left"></i> 在ubuntu使用systemd建立開機telegram訊息通知
+                <a href="/2023/11/21/rm-ng-spec/" rel="prev" title="移除 Angular 無用的 *.spec.ts 檔案">
+                  <i class="fa fa-chevron-left"></i> 移除 Angular 無用的 *.spec.ts 檔案
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/11/21/rm-ng-spec/" rel="next" title="移除 Angular 無用的 *.spec.ts 檔案">
-                  移除 Angular 無用的 *.spec.ts 檔案 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

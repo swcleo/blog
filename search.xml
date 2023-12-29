@@ -149,4 +149,58 @@
         <tag>VSCode</tag>
       </tags>
   </entry>
+  <entry>
+    <title>debug-andriod</title>
+    <url>/2023/12/29/debug-andriod/</url>
+    <content><![CDATA[<h2 id="前端如何-debug-Webview-應用程式"><a href="#前端如何-debug-Webview-應用程式" class="headerlink" title="前端如何 debug Webview 應用程式"></a>前端如何 debug Webview 應用程式</h2><p>混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。</p>
+<p>混合式應用程式使用一個稱為 WebView 的元件，這個元件允許開發者在應用程式中嵌入網頁內容，提供使用網頁技術開發的功能。</p>
+<h2 id="WebView-Test"><a href="#WebView-Test" class="headerlink" title="WebView Test"></a>WebView Test</h2><p>這是一個手機 App 用於測試 Andriod WebView 應用程式，提供前端開發人員需要的資訊，透過手機安裝 <a href="https://play.google.com/store/apps/details?id=com.snc.test.webview2&hl=zh_TW&gl=US">Google Play</a> 即可使用，相對簡單好上手。</p>
+<span id="more"></span>
+
+<h2 id="Andriod-Studio"><a href="#Andriod-Studio" class="headerlink" title="Andriod Studio"></a>Andriod Studio</h2><p>如果有App開發相關的經驗，也可以開發一個 WebView 專案，提供更完整的測試功能。</p>
+<p>可以參考 <a href="https://github.com/swcleo/android-webvew-example">https://github.com/swcleo/android-webvew-example</a></p>
+<p>記得安裝完下載並安裝完 Andriod Studio 後，記得將 sdk 的工具包指令放到 PATH 上。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:~/Library/Android/sdk/platform-tools</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:~/Library/Android/sdk/tools</span><br></pre></td></tr></table></figure>
+
+<h2 id="夜神模擬器"><a href="#夜神模擬器" class="headerlink" title="夜神模擬器"></a>夜神模擬器</h2><p>筆者開發的電腦是 Intel 核心的 Mac 電腦，如果手機上沒有實機，使用 Andriod Stiod 提供的 Simulator 不方便測試時，可以安裝夜神模擬器搭配 Andriod Studio 進行測試。</p>
+<p>Andriod Studio 如何連接夜神模擬器</p>
+<p>1 安裝&amp;執行夜神模擬器</p>
+<p>2 使用 adb 連接夜神的 debug 接口，可以從 virtualbox 的網路接口查看，預設是 <code>62001</code></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">adb connect 127.0.0.1:62001</span><br></pre></td></tr></table></figure>
+
+<h2 id="adb指令"><a href="#adb指令" class="headerlink" title="adb指令"></a>adb指令</h2><ul>
+<li>查看 webview 版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys package com.google.android.webview | grep versionName</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看手機型號</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">adb shell getprop ro.product.model</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看設備資料</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">adb shell getprop | grep product</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">adb shell <span class="built_in">cat</span> /system/build.prop | grep product</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看 android 系統版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">adb shell getprop ro.build.version.release</span><br></pre></td></tr></table></figure>
+
+<h2 id="Chrome-Debug"><a href="#Chrome-Debug" class="headerlink" title="Chrome Debug"></a>Chrome Debug</h2><p>如果 WebView 程式有透過設定啟用 Debugging 功能</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WebView.setWebContentsDebuggingEnabled(true);</span><br></pre></td></tr></table></figure>
+
+<p>可以在 Chrome 上網址輸入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chrome://inspect</span><br></pre></td></tr></table></figure>
+
+<p>就可以透過手機USB偵錯功能使用 chrome 開發者工具排除 WebView 上網頁 debug 測試。</p>
+]]></content>
+      <tags>
+        <tag>andriod webview</tag>
+      </tags>
+  </entry>
 </search>
