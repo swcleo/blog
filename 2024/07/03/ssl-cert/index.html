@@ -20,28 +20,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"swcleo.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前端如何 debug Webview 應用程式混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。 混合式應用程式使">
+    <meta name="description" content="前言： 好久沒更新技術文章，近期因為公司組識架構又要調整，產品單位進行人力縮減，對於自己去留的決定又開始感到些許迷茫，畢竟我也36歲即將步入中年，說不擔心是騙人的，從出社會後，好像一直都是在為工作、為家庭而活，想那麼多也沒有用，不如利用交接工作的空檔來寫篇技術文章轉換一下心情好了。 mkcert 是什麼？對於前端開發人員來說，對於網頁使用 https 協定應該不陌生，因為現在網頁基本都是 http">
 <meta property="og:type" content="article">
-<meta property="og:title" content="debug-andriod">
-<meta property="og:url" content="https://swcleo.github.io/2023/12/29/debug-andriod/index.html">
+<meta property="og:title" content="使用 mkcert 建立開發用的憑證">
+<meta property="og:url" content="https://swcleo.github.io/2024/07/03/ssl-cert/index.html">
 <meta property="og:site_name" content="技術日誌 ✏ LEO">
-<meta property="og:description" content="前端如何 debug Webview 應用程式混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。 混合式應用程式使">
+<meta property="og:description" content="前言： 好久沒更新技術文章，近期因為公司組識架構又要調整，產品單位進行人力縮減，對於自己去留的決定又開始感到些許迷茫，畢竟我也36歲即將步入中年，說不擔心是騙人的，從出社會後，好像一直都是在為工作、為家庭而活，想那麼多也沒有用，不如利用交接工作的空檔來寫篇技術文章轉換一下心情好了。 mkcert 是什麼？對於前端開發人員來說，對於網頁使用 https 協定應該不陌生，因為現在網頁基本都是 http">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2023-12-29T02:44:59.000Z">
-<meta property="article:modified_time" content="2023-12-29T04:59:09.647Z">
+<meta property="og:image" content="https://swcleo.github.io/2024/07/03/ssl-cert/rootCA.png">
+<meta property="og:image" content="https://swcleo.github.io/2024/07/03/ssl-cert/vite.png">
+<meta property="og:image" content="https://swcleo.github.io/2024/07/03/ssl-cert/chrome.png">
+<meta property="og:image" content="https://swcleo.github.io/2024/07/03/ssl-cert/firefox.png">
+<meta property="article:published_time" content="2024-07-03T02:53:58.000Z">
+<meta property="article:modified_time" content="2024-07-03T04:31:13.557Z">
 <meta property="article:author" content="Leo Chen">
-<meta property="article:tag" content="andriod webview">
+<meta property="article:tag" content="mkcert、nginx">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swcleo.github.io/2024/07/03/ssl-cert/rootCA.png">
 
 
-<link rel="canonical" href="https://swcleo.github.io/2023/12/29/debug-andriod/">
+<link rel="canonical" href="https://swcleo.github.io/2024/07/03/ssl-cert/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://swcleo.github.io/2023/12/29/debug-andriod/","path":"2023/12/29/debug-andriod/","title":"debug-andriod"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://swcleo.github.io/2024/07/03/ssl-cert/","path":"2024/07/03/ssl-cert/","title":"使用 mkcert 建立開發用的憑證"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>debug-andriod | 技術日誌 ✏ LEO</title>
+<title>使用 mkcert 建立開發用的憑證 | 技術日誌 ✏ LEO</title>
   
 
 
@@ -141,7 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95-debug-Webview-%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">前端如何 debug Webview 應用程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebView-Test"><span class="nav-number">2.</span> <span class="nav-text">WebView Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Andriod-Studio"><span class="nav-number">3.</span> <span class="nav-text">Andriod Studio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9C%E7%A5%9E%E6%A8%A1%E6%93%AC%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">夜神模擬器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adb%E6%8C%87%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">adb指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chrome-Debug"><span class="nav-number">6.</span> <span class="nav-text">Chrome Debug</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mkcert-%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">mkcert 是什麼？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E9%96%8B%E7%99%BC%E7%94%A8%E6%86%91%E8%AD%89"><span class="nav-number">2.</span> <span class="nav-text">建立開發用憑證</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -206,7 +211,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://swcleo.github.io/2023/12/29/debug-andriod/">
+    <link itemprop="mainEntityOfPage" href="https://swcleo.github.io/2024/07/03/ssl-cert/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -219,12 +224,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="debug-andriod | 技術日誌 ✏ LEO">
+      <meta itemprop="name" content="使用 mkcert 建立開發用的憑證 | 技術日誌 ✏ LEO">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          debug-andriod
+          使用 mkcert 建立開發用的憑證
         </h1>
 
         <div class="post-meta-container">
@@ -236,7 +241,7 @@
       <span class="post-meta-item-text">發表於</span>
       
 
-      <time title="創建時間：2023-12-29 10:44:59 / 修改時間：12:59:09" itemprop="dateCreated datePublished" datetime="2023-12-29T10:44:59+08:00">2023-12-29</time>
+      <time title="創建時間：2024-07-03 10:53:58 / 修改時間：12:31:13" itemprop="dateCreated datePublished" datetime="2024-07-03T10:53:58+08:00">2024-07-03</time>
     </span>
 
   
@@ -248,8 +253,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2023/12/29/debug-andriod/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/12/29/debug-andriod/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2024/07/03/ssl-cert/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2024/07/03/ssl-cert/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -263,52 +268,49 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="前端如何-debug-Webview-應用程式"><a href="#前端如何-debug-Webview-應用程式" class="headerlink" title="前端如何 debug Webview 應用程式"></a>前端如何 debug Webview 應用程式</h2><p>混合式應用程式是指結合了網頁技術（HTML、CSS、JavaScript）和原生應用程式元件的應用程式。這種應用程式通常使用一個 WebView 元件來顯示網頁內容，同時也可以利用原生的程式碼和功能，例如訪問硬體感應器、存儲資料、執行後台任務等。這樣的應用程式既能享受到網頁開發的快速和跨平台特性，又能利用原生應用程式提供的性能和功能。</p>
-<p>混合式應用程式使用一個稱為 WebView 的元件，這個元件允許開發者在應用程式中嵌入網頁內容，提供使用網頁技術開發的功能。</p>
-<h2 id="WebView-Test"><a href="#WebView-Test" class="headerlink" title="WebView Test"></a>WebView Test</h2><p>這是一個手機 App 用於測試 Andriod WebView 應用程式，提供前端開發人員需要的資訊，透過手機安裝 <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.snc.test.webview2&hl=zh_TW&gl=US">Google Play</a> 即可使用，相對簡單好上手。</p>
+        <p>前言：</p>
+<p>好久沒更新技術文章，近期因為公司組識架構又要調整，產品單位進行人力縮減，對於自己去留的決定又開始感到些許迷茫，畢竟我也36歲即將步入中年，說不擔心是騙人的，從出社會後，好像一直都是在為工作、為家庭而活，想那麼多也沒有用，不如利用交接工作的空檔來寫篇技術文章轉換一下心情好了。</p>
+<h2 id="mkcert-是什麼？"><a href="#mkcert-是什麼？" class="headerlink" title="mkcert 是什麼？"></a>mkcert 是什麼？</h2><p>對於前端開發人員來說，對於網頁使用 https 協定應該不陌生，因為現在網頁基本都是 https 開頭的了，好像很少會看到 http，目前應該只剩下在開發環境才會使用到。那兩者有什麼差別呢？簡單來說 https 是安全的超文本傳輸協議，使用SSL&#x2F;TLS協議對資料進行加密，確認 C&#x2F;S 兩端的安全性。</p>
+<p>如果開發人員有需要建構 https 網站的需要，不免就需要先取得合法的憑證才能夠進行設定，但正規的憑證是需要花錢購買的，如果要自己手動透過 OpenSSL 建立自我簽署的憑證，也需要對於憑證有一定的理解，這時候使用 mkcert 可以很快速的協助開發人員建立個人或是單位內通用的憑證。</p>
 <span id="more"></span>
 
-<h2 id="Andriod-Studio"><a href="#Andriod-Studio" class="headerlink" title="Andriod Studio"></a>Andriod Studio</h2><p>如果有App開發相關的經驗，也可以開發一個 WebView 專案，提供更完整的測試功能。</p>
-<p>可以參考 <a target="_blank" rel="noopener" href="https://github.com/swcleo/android-webvew-example">https://github.com/swcleo/android-webvew-example</a></p>
-<p>記得安裝完下載並安裝完 Andriod Studio 後，記得將 sdk 的工具包指令放到 PATH 上。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:~/Library/Android/sdk/platform-tools</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:~/Library/Android/sdk/tools</span><br></pre></td></tr></table></figure>
+<h2 id="建立開發用憑證"><a href="#建立開發用憑證" class="headerlink" title="建立開發用憑證"></a>建立開發用憑證</h2><p>1 安裝方式</p>
+<p>On macOS, use Homebrew</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install mkcert</span><br><span class="line">brew install nss</span><br></pre></td></tr></table></figure>
 
-<h2 id="夜神模擬器"><a href="#夜神模擬器" class="headerlink" title="夜神模擬器"></a>夜神模擬器</h2><p>筆者開發的電腦是 Intel 核心的 Mac 電腦，如果手機上沒有實機，使用 Andriod Stiod 提供的 Simulator 不方便測試時，可以安裝夜神模擬器搭配 Andriod Studio 進行測試。</p>
-<p>Andriod Studio 如何連接夜神模擬器</p>
-<p>1 安裝&amp;執行夜神模擬器</p>
-<p>2 使用 adb 連接夜神的 debug 接口，可以從 virtualbox 的網路接口查看，預設是 <code>62001</code></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 127.0.0.1:62001</span><br></pre></td></tr></table></figure>
+<p>On ubuntu</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libnss3-tools</span><br><span class="line">curl -JLO <span class="string">&quot;https://dl.filippo.io/mkcert/latest?for=linux/amd64&quot;</span></span><br><span class="line"><span class="built_in">chmod</span> +x mkcert-v*-linux-amd64</span><br><span class="line">sudo <span class="built_in">cp</span> mkcert-v*-linux-amd64 /usr/local/bin/mkcert</span><br></pre></td></tr></table></figure>
 
-<h2 id="adb指令"><a href="#adb指令" class="headerlink" title="adb指令"></a>adb指令</h2><ul>
-<li>查看 webview 版本</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell dumpsys package com.google.android.webview | grep versionName</span><br></pre></td></tr></table></figure>
+<p>其他系統可以參考 mkcert 的說明<br><a target="_blank" rel="noopener" href="https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation">https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation</a></p>
+<p>2 使用 mkcert 指令建構 RootCA</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkcert -install</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>查看手機型號</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop ro.product.model</span><br></pre></td></tr></table></figure>
+<p>上述指令會在本機產生一個根憑證，這個是根憑證頒發機構（CA）的公鑰憑證，當然這個機構是自己 XD，可以用來頒發SSL簽證使用。</p>
+<p>使用下述指令可以查看根憑證的安裝位置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkcert -CAROOT</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>查看設備資料</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop | grep product</span><br></pre></td></tr></table></figure>
+<p>切換到 <code>CAROOT</code> 位置可以看到，包含一組公鑰和私鑰</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rootCA-key.pem  rootCA.pem</span><br></pre></td></tr></table></figure>
 
-<p>或</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell <span class="built_in">cat</span> /system/build.prop | grep product</span><br></pre></td></tr></table></figure>
+<img src="/2024/07/03/ssl-cert/rootCA.png" class="label">
 
-<ul>
-<li>查看 android 系統版本</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell getprop ro.build.version.release</span><br></pre></td></tr></table></figure>
+<p>3 產生 https 需要使用的憑證，使用 <code>-key-file</code> 和 <code>-cert-file</code> 參數指定憑證的檔名，後面在接下提供 domain。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkcert -key-file vite-key.pem -cert-file vite.pem localhost 127.0.0.1 ::1</span><br></pre></td></tr></table></figure>
 
-<h2 id="Chrome-Debug"><a href="#Chrome-Debug" class="headerlink" title="Chrome Debug"></a>Chrome Debug</h2><p>如果 WebView 程式有透過設定啟用 Debugging 功能</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WebView.setWebContentsDebuggingEnabled(true);</span><br></pre></td></tr></table></figure>
+<p>輸出結果，可以看到按照提供的網站名稱生成証書。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Created a new certificate valid <span class="keyword">for</span> the following names 📜</span><br><span class="line"> - <span class="string">&quot;localhost&quot;</span></span><br><span class="line"> - <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line"> - <span class="string">&quot;::1&quot;</span></span><br><span class="line"></span><br><span class="line">The certificate is at <span class="string">&quot;vite.pem&quot;</span> and the key at <span class="string">&quot;vite-key.pem&quot;</span> ✅</span><br><span class="line"></span><br><span class="line">It will expire on 3 October 2026 🗓</span><br></pre></td></tr></table></figure>
 
-<p>可以在 Chrome 上網址輸入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chrome://inspect</span><br></pre></td></tr></table></figure>
+<p>我們簡單的使用 <code>vite</code> 來測試憑證看看</p>
+<img src="/2024/07/03/ssl-cert/vite.png" class="label">
 
-<p>就可以透過手機USB偵錯功能使用 chrome 開發者工具排除 WebView 上網頁 debug 測試。</p>
+<p>使用 chrome 測試 https 連線狀況</p>
+<img src="/2024/07/03/ssl-cert/chrome.png" class="label">
+
+<p>使用 firefox 測試 https 連線狀況</p>
+<img src="/2024/07/03/ssl-cert/firefox.png" class="label">
+
+<p>從 macOS 上測試，本機瀏覽器都可以識別自簽開發用的簽證。</p>
+<p>如果有其他人員或是電腦也想使用此憑證，因此根憑證是自己產生的，記得將根憑證的公鑰 <code>rootCA.pem</code> 複制到其他電腦上進行安裝。</p>
 
     </div>
 
@@ -318,21 +320,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/andriod-webview/" rel="tag"># andriod webview</a>
+              <a href="/tags/mkcert%E3%80%81nginx/" rel="tag"># mkcert、nginx</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/11/21/rm-ng-spec/" rel="prev" title="移除 Angular 無用的 *.spec.ts 檔案">
-                  <i class="fa fa-chevron-left"></i> 移除 Angular 無用的 *.spec.ts 檔案
+                <a href="/2023/12/29/debug-andriod/" rel="prev" title="debug-andriod">
+                  <i class="fa fa-chevron-left"></i> debug-andriod
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/07/03/ssl-cert/" rel="next" title="使用 mkcert 建立開發用的憑證">
-                  使用 mkcert 建立開發用的憑證 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
